@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,HttpResponse
 
 # Create your views here.
 def frequent_mode_of_payments(request):
@@ -13,3 +13,5 @@ def emi_payments(request):
 def spending_sectors(request):
     pass
 
+def index(request):
+    return HttpResponse("index")
