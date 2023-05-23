@@ -2,7 +2,8 @@ from django.shortcuts import render,HttpResponse
 
 # Create your views here.
 def analytics(request):
-    pass
+    if request.method == "GET":
+        
 
 def index(request):
     return HttpResponse("index")
