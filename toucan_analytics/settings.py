@@ -75,9 +75,13 @@ WSGI_APPLICATION = 'toucan_analytics.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "customer_data",
+        "USER": "admin",
+        "PASSWORD": "Admin2000",
+        "HOST": "django-db-server.cqqqpmbhao8s.ap-south-1.rds.amazonaws.com",
+        "PORT": "3306",
     }
 }
 
