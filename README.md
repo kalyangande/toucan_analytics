@@ -15,6 +15,12 @@ To analyze the customer data and create a table for frequent mode of transaction
 
 ## Setup
 The first thing to do is to clone the repository:
+```sh
+$ git clone https://github.com/Pythontp/toucan_analytics.git
+$ cd toucan_analytics
 ```
-git clone
+Create a virtual environment to install dependencies in and activate it:
+```sh
+$ python3 -m venv *environment_name*
+$ source env/bin/activate
 ```
