@@ -21,6 +21,22 @@ $ cd toucan_analytics
 ```
 Create a virtual environment to install dependencies in and activate it:
 ```sh
-$ python3 -m venv *environment_name*
-$ source env/bin/activate
+$ python3 -m venv env_name
+$ source env_name/bin/activate
 ```
+Then install the dependencies:
+```sh
+(env)$ pip install python
+(env)$ pip install django
+(env)$ pip install streamlit
+(env)$ pip install matplotlib
+(env)$ pip install pandas
+```
+
+Note: The (env) in front of the prompt. This indicates that this terminal session operates in a virtual environment.
+
+To run the django app:
+```sh
+$ python manage.py runserver
+```
+A webpage will be opened displaying the table, graphs and pie chart.
