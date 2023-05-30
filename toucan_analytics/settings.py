@@ -77,7 +77,12 @@ WSGI_APPLICATION = 'toucan_analytics.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
+<<<<<<< HEAD
         "NAME": "mydatabase",
+=======
+        "NAME": "sqlite3",
+        
+>>>>>>> f61e14dd2b700a32a1ee9c4344de73e5a064e35f
     }
 }
 
