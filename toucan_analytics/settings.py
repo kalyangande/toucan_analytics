@@ -76,12 +76,8 @@ WSGI_APPLICATION = 'toucan_analytics.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "customer_data",
-        "USER": "admin",
-        "PASSWORD": "Admin2000",
-        "HOST": "django-db-server.cqqqpmbhao8s.ap-south-1.rds.amazonaws.com",
-        "PORT": "3306",
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": "mydatabase",
     }
 }
 

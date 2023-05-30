@@ -9,3 +9,7 @@ class CustomerData(models.Model):
     mode_of_payments = models.CharField(max_length=25)
     amount_spent = models.FloatField()
     date = models.DateField()
+
+class EMIData(models.Model):
+    customer_Id  = models.IntegerField()
+    EMI_paid_on_time = models.CharField(max_length=6)
