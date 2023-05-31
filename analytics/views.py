@@ -94,6 +94,8 @@ def analytics(request):
         elif type == "emi":
             response = emi(request)
             return response
+        else:
+            return HttpResponse("wow")
     else:
         return HttpResponse("WOW")
     
