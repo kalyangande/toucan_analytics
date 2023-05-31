@@ -1,4 +1,4 @@
-from django.shortcuts import render,HttpResponse
+from django.shortcuts import render,HttpResponse,redirect
 from django.http import JsonResponse
 
 from django.views.decorators.csrf import csrf_exempt
@@ -101,7 +101,7 @@ def analytics(request):
     
 
 def index(request):
-    return HttpResponse("index")
+    return redirect("http://192.168.56.22:8501")
 
 
 
