@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-from django.db import models
+from django.db import models,transaction
 from django.utils import timezone
 from django.contrib.auth.models import (
     AbstractBaseUser, PermissionsMixin, BaseUserManager
@@ -29,7 +29,7 @@ Creates and saves a User with the given email,and password.
         extra_fields.setdefault('is_superuser', True)
         return self._create_user(email, password=password, **extra_fields)
     
-    
+
 class User(AbstractBaseUser, PermissionsMixin):
     """ 
 An abstract base class implementing a fully featured User model with 
