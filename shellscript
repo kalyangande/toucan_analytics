@@ -1,0 +1,14 @@
+ #!/bin/bash
+
+# URL to fetch data from
+url="https://example.com/api/data"
+
+# Execute curl command and save output as a string
+output=$(curl -s "$url")
+
+# Check if output string is equal to "index"
+if [ "$output" = "index" ]; then
+    echo "Output string is equal to the 'index'"
+else
+    echo "Output string is not equal to 'index'"
+fi
