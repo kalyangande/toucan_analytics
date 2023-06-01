@@ -48,7 +48,7 @@ pipeline {
 
                     [Install]
                     WantedBy=multi-user.target" | sudo tee /etc/systemd/system/toucan_analytics.service
-                
+               '''                
                 
                 sh 'sudo systemctl daemon-reload' // Reload systemd configuration
                 sh 'sudo systemctl enable toucan_analytics.service' 
