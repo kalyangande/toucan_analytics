@@ -14,7 +14,7 @@ import datetime
 
 st.set_page_config(layout="wide")
 
-local_host = 'http://localhost:8000/'
+local_host = 'http://52.90.18.143:8000/'
 
 
 # Create a session state object
@@ -46,7 +46,15 @@ def get_data(token):
     else:
         return None
 
-
+def get_data_for_analytics_views(token):
+    url = local_host + 'analytics/'
+    headers = {'Authorization': f'Bearer {token}'}
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return None
+token = " "   
 def login_page():
     st.markdown("<h1 style='text-align: center; '>Login Page</h1> <br>", unsafe_allow_html=True)
     col1,col2,col3 = st.columns(3)
@@ -65,12 +73,17 @@ def login_page():
             # st.success('Authentication successful!')
             # st.write('JWT Token:', token)
             data = get_data(token)
+            st.write(data)
+            data = get_data_for_analytics_views(token)
+            st.write(data)
             if data:
                 return True  
 
         else:
             st.error("Invalid username or password.")
             return False  # Return False to indicate unsuccessful login
+        
+# login_success = login_page()
 
 # Display the login page
 if 'logged_in' not in st.session_state or not st.session_state['logged_in']:
@@ -126,6 +139,7 @@ else:
     with col1:
         st.markdown("<h2 style='text-align: center;margin-bottom:10px'>PIE CHART</h2>", unsafe_allow_html=True)
         url = local_host + 'analytics/?type=pie'
+        get_data_for_analytics_views(token)
         response = requests.get(url,params=params)
         if response.status_code == 200:
             # Extract the data from the response
@@ -150,6 +164,7 @@ else:
         st.markdown("<h2 style='text-align: center;'>Amount Spent Vs Mode of Payments</h2>", unsafe_allow_html=True)
         st.header("\n")
         url = local_host + 'analytics/?type=bar'
+        get_data_for_analytics_views(token)
         get_method=requests.get(url,params=params)
         if get_method.status_code == 200:
             # Extract the data from the response
@@ -173,8 +188,9 @@ else:
     col3, col4 = st.columns(2, gap="large")
     with col3:
         st.markdown("<h2 style='text-align: center;margin-bottom:20px'>EMI RE-PAYMENTS</h2>", unsafe_allow_html=True)
+        get_data_for_analytics_views(token)
         url = local_host + 'analytics/?type=emi'
-        get_method=requests.get(url,params=params)
+        get_method=requests.get(url)
         if get_method.status_code == 200:
             # Extract the data from the response
             data = get_method.json()
@@ -195,6 +211,7 @@ else:
 
     with col4:
         st.markdown("<h2 style='text-align: center;margin-bottom:20px'>Frequent Mode Transanction of by an individual Customer</h2>", unsafe_allow_html=True)
+        get_data_for_analytics_views(token)
         url = local_host + 'analytics/?type=table'
         get_method=requests.get(url,params=params)
         if get_method.status_code == 200:
