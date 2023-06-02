@@ -5,8 +5,6 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.views.decorators.csrf import csrf_exempt
 from .models import CustomerData,EMIData
-import csv
-from django.db import models
 from django.db.models import Count,Sum,Max
 
 
@@ -17,9 +15,9 @@ class HelloView(APIView):
         content = {'message': 'Hello, World!'}
         return Response(content)
 
-# Create your views here.
-def table(request):
-    unique_customers=CustomerData.objects.values('customer_Id').annotate(frequent_modes_of_transanction=Max('mode_of_payments'))
+
+def table(request,start_date,end_date):
+    unique_customers=CustomerData.objects.filter(date__range=[start_date, end_date]).values('customer_Id').annotate(frequent_modes_of_transanction=Max('mode_of_payments'))
     # For TABLE
     customer = []
     values = []
@@ -33,8 +31,9 @@ def table(request):
         }
     # Return the JSON response
     return JsonResponse(response_data)
-def bar(request):
-    result=CustomerData.objects.values('mode_of_payments').annotate(total_amount=Sum('amount_spent'))
+
+def bar(request,start_date,end_date):
+    result=CustomerData.objects.filter(date__range=[start_date, end_date]).values('mode_of_payments').annotate(total_amount=Sum('amount_spent'))
     # For BAR GRAPH
     mode =[]
     amount=[]
@@ -49,8 +48,8 @@ def bar(request):
     # Return the JSON response
     return JsonResponse(response_data)
 
-def pie(requests):
-    grouped_data = CustomerData.objects.values('category').annotate(sum_field=Sum('amount_spent'))
+def pie(requests,start_date,end_date):
+    grouped_data = CustomerData.objects.filter(date__range=[start_date, end_date]).values('category').annotate(sum_field=Sum('amount_spent'))
 
 # For PIE CHART
     labels = []
@@ -90,15 +89,19 @@ def emi(request):
 @csrf_exempt
 def analytics(request):
     if request.method == "GET":
+        
         type = request.GET.get('type')
+        start_date = request.GET.get("start_date")
+        end_date = request.GET.get("end_date")
+
         if type == "table":
-            response = table(request)
+            response = table(request,start_date,end_date)
             return response
         elif type == "bar":
-            response = bar(request)
+            response = bar(request,start_date,end_date)
             return response
         elif type == "pie":
-            response = pie(request)
+            response = pie(request,start_date,end_date)
             return response
         elif type == "emi":
             response = emi(request)
@@ -111,6 +114,29 @@ def analytics(request):
 
 def index(request):
     return redirect("http://192.168.56.22:8501")
+
+from rest_framework import permissions
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.contrib.auth import authenticate
+import jwt
+from django.conf import settings
+
+
+class DataView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+
+        try:
+            token = request.META['HTTP_AUTHORIZATION'].split()[1]
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+            user_id = payload['user_id']
+            data = {"WOW":"WOW"}
+            return Response(data)
+        
+        except Exception as e:
+            return Response({'error': str(e)}, status=401)
 
 
 
