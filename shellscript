@@ -1,7 +1,7 @@
  #!/bin/bash
 
 # URL to fetch data from
-url="https://example.com/api/data"
+url="https://github.com/Pythontp/toucan_analytics.git"
 
 # Execute curl command and save output as a string
 output=$(curl -s "$url")
