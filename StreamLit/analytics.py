@@ -1,13 +1,6 @@
-# Login -> jwt token save
-# subsequent calls get – header – put jwt token and issue get calls
-
 import streamlit as st
 import matplotlib.pyplot as plt
 import requests
-import json
-import streamlit as st
-from django.http import request
-import streamlit as st
 import pandas as pd
 import altair as alt
 import datetime
@@ -16,11 +9,10 @@ st.set_page_config(layout="wide")
 
 local_host = 'http://localhost:8000/'
 
-
-# Create a session state object
 session_state = st.session_state
 
 def get_jwt_token(username, password):
+    
     url = local_host + 'api/token/'
     data = {
         'username': username,
@@ -42,12 +34,13 @@ def get_data(token):
     headers = {'Authorization': f'Bearer {token}'}
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
-        return response.json()
+        return token
     else:
         return None
 
 
-def login_page():
+if 'logged_in' not in st.session_state or not st.session_state['logged_in']:
+    
     st.markdown("<h1 style='text-align: center; '>Login Page</h1> <br>", unsafe_allow_html=True)
     col1,col2,col3 = st.columns(3)
     with col1:
@@ -61,29 +54,24 @@ def login_page():
 
     if login_button:
         token = get_jwt_token(username, password)
+        
         if token:
-            # st.success('Authentication successful!')
-            # st.write('JWT Token:', token)
             data = get_data(token)
+            
             if data:
-                return True  
+                st.session_state['logged_in'] = True
+                st.session_state['token'] = token
+                st.experimental_rerun()
+            else:
+                 st.write("You dont have permission to access the next page")
 
         else:
             st.error("Invalid username or password.")
-            return False  # Return False to indicate unsuccessful login
 
-# Display the login page
-if 'logged_in' not in st.session_state or not st.session_state['logged_in']:
-    login_success = login_page()
+if 'logged_in' in st.session_state or st.session_state['logged_in']:
 
-    if login_success:
-        st.session_state['logged_in'] = True
-        st.experimental_rerun()
-else:
-    
+    token=st.session_state['token']    
     st.markdown("<h1 style='text-align: center; '>Toucan Analytics</h1> <br>", unsafe_allow_html=True)
-
-    # "2023-01-01", "2023-12-31"
 
     min_date = datetime.date(2023, 1, 1)
     max_date = datetime.date(2023, 12, 31)
@@ -117,28 +105,24 @@ else:
             "end_date": str(end_date)
         }
         
-# table_url = "http://127.0.0.1:8000/analytics/?type=table&start_date={start_date_str}&end_date={end_date_str}"
-
-
 
     col1, col2 = st.columns(2, gap="large")
 
     with col1:
         st.markdown("<h2 style='text-align: center;margin-bottom:10px'>PIE CHART</h2>", unsafe_allow_html=True)
         url = local_host + 'analytics/?type=pie'
-        response = requests.get(url,params=params)
+        headers = {'Authorization': f'Bearer {token}'}
+        response = requests.get(url, headers=headers,params=params)
         if response.status_code == 200:
-            # Extract the data from the response
             data = response.json()
             labels = data['labels']
             sizes = data['sizes']
-            # Pie chart, where the slices will be ordered and plotted counter-clockwise:
             colors = ['violet','indigo','blue','green','yellow','orange']
             wedgeprops = {'linewidth': 0.5, 'edgecolor': 'white'}
             explode = [0,0,0,0,0,0]
             fig1, ax1 = plt.subplots(figsize=(4, 4))
             ax1.pie(sizes, explode=explode, labels=labels, autopct='%1.1f%%',startangle=90,colors=colors,wedgeprops=wedgeprops)
-            ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+            ax1.axis('equal')  
             st.pyplot(fig1)
             st.write('\n')
         else:
@@ -146,14 +130,13 @@ else:
             
 
     with col2:
-    
         st.markdown("<h2 style='text-align: center;'>Amount Spent Vs Mode of Payments</h2>", unsafe_allow_html=True)
         st.header("\n")
         url = local_host + 'analytics/?type=bar'
-        get_method=requests.get(url,params=params)
-        if get_method.status_code == 200:
-            # Extract the data from the response
-            data = get_method.json()
+        headers = {'Authorization': f'Bearer {token}'}
+        response = requests.get(url, headers=headers,params=params)
+        if response.status_code == 200:
+            data = response.json()
             mode_list = data['mode']
             amount_list = data['amount']
             source = pd.DataFrame({
@@ -167,17 +150,17 @@ else:
             st.altair_chart(bar_chart, use_container_width=True)
             st.write('\n')
         else:
-            st.error(f'Error: {get_method.status_code}')
-
+            st.error(f'Error: {response.status_code}')
 
     col3, col4 = st.columns(2, gap="large")
+
     with col3:
         st.markdown("<h2 style='text-align: center;margin-bottom:20px'>EMI RE-PAYMENTS</h2>", unsafe_allow_html=True)
         url = local_host + 'analytics/?type=emi'
-        get_method=requests.get(url,params=params)
-        if get_method.status_code == 200:
-            # Extract the data from the response
-            data = get_method.json()
+        headers = {'Authorization': f'Bearer {token}'}
+        response = requests.get(url, headers=headers,params=params)
+        if response.status_code == 200:
+            data = response.json()
             in_time = data['in_time']
             total = data['total']
             source = pd.DataFrame({
@@ -191,31 +174,26 @@ else:
             st.altair_chart(bar_chart, use_container_width=True)
             st.write('\n')
         else:
-            st.error(f'Error: {get_method.status_code}')
+            st.error(f'Error: {response.status_code}')
 
     with col4:
         st.markdown("<h2 style='text-align: center;margin-bottom:20px'>Frequent Mode Transanction of by an individual Customer</h2>", unsafe_allow_html=True)
         url = local_host + 'analytics/?type=table'
-        get_method=requests.get(url,params=params)
-        if get_method.status_code == 200:
-            # Extract the data from the response
-            data = get_method.json()
+        headers = {'Authorization': f'Bearer {token}'}
+        response = requests.get(url, headers=headers,params=params)
+        if response.status_code == 200:
+            data = response.json()
             customer = data['customer']
             mode = data['values']
-            
-        # Create a sample data frame
+          
             data = {
                 'Customer Id': [i for i in customer],
                 'Frequent mode of Transanction': [i for i in mode],
             }
             df = pd.DataFrame(data)
-
-            # Insert the 'S.No' column
-            # df.insert(0, 'S.No', range(1, len(df) + 1))
-
-
+            df.index = [i+1 for i in range(len(df))]
+            df.index.name = 'S.No'
             st.dataframe(df, height=350)
             
         else:
-            st.error(f'Error: {get_method.status_code}')
-        
+            st.error(f'Error: {response.status_code}')
