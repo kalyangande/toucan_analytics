@@ -10,8 +10,6 @@ st.set_page_config(layout="wide")
 local_host = 'http://localhost:8000/'
 
 session_state = st.session_state
-st.session_state['logged_in']=False
-st.session_state['token']=None
 
 def get_jwt_token(username, password):
     
