@@ -6,15 +6,9 @@ from django.conf import settings
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .models import CustomerData,EMIData
+import csv
+from django.db import models
 from django.db.models import Count,Sum,Max
-
-
-class HelloView(APIView):
-    permission_classes = (IsAuthenticated,)
-
-    def get(self, request):
-        content = {'message': 'Hello, World!'}
-        return Response(content)
 
 
 def table(request,start_date,end_date):
@@ -104,16 +98,15 @@ class DataView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-
         try:
             token = request.META['HTTP_AUTHORIZATION'].split()[1]
             payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
             user_id = payload['user_id']
-            data = {"WOW":"WOW"}
+            data = {"Userid":user_id}
             return Response(data)
-        
         except Exception as e:
             return Response({'error': str(e)}, status=401)
+        
 
 
 class Analytics(APIView):

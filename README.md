@@ -1,4 +1,4 @@
-# toucan_analytics
+# Toucan Analytics
 To analyze the customer data and create a table for frequent mode of transaction by individual customer, a bar graph for the amount spent on each mode of transaction for all the customers, a bar graph for the number of customers who paid EMI on time and the customers who haven't paid and a pie chart by grouping based on the various expenses by all the customers.
 
 ## Getting Started
