@@ -7,9 +7,11 @@ import datetime
 
 st.set_page_config(layout="wide")
 
-local_host = 'http://52.90.18.143:8000/'
+local_host = 'http://localhost:8000/'
 
 session_state = st.session_state
+st.session_state['logged_in']=False
+st.session_state['token']=None
 
 def get_jwt_token(username, password):
     
@@ -63,12 +65,12 @@ if 'logged_in' not in st.session_state or not st.session_state['logged_in']:
                 st.session_state['token'] = token
                 st.experimental_rerun()
             else:
-                 st.write("You dont have permission to access the next page")
+                 st.write("You do not have permission to access the next page")
 
         else:
             st.error("Invalid username or password.")
 
-if 'logged_in' in st.session_state or st.session_state['logged_in']:
+if 'logged_in' in st.session_state and st.session_state['logged_in']:
 
     token=st.session_state['token']    
     st.markdown("<h1 style='text-align: center; '>Toucan Analytics</h1> <br>", unsafe_allow_html=True)

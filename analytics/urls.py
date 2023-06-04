@@ -1,5 +1,4 @@
 from django.urls import path
-from django.urls import path
 from .views import Analytics,DataView,index
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 

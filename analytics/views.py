@@ -6,8 +6,6 @@ from django.conf import settings
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .models import CustomerData,EMIData
-import csv
-from django.db import models
 from django.db.models import Count,Sum,Max
 
 
@@ -45,7 +43,7 @@ def bar(request,start_date,end_date):
     
     return response_data
 
-def pie(requests,start_date,end_date):
+def pie(request,start_date,end_date):
     
     grouped_data = CustomerData.objects.filter(date__range=[start_date, end_date]).values('category').annotate(sum_field=Sum('amount_spent'))
 
