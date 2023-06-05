@@ -19,7 +19,7 @@ The first thing to do is to clone the repository:
 $ git clone https://github.com/Pythontp/toucan_analytics.git
 $ cd toucan_analytics
 ```
-Create a virtual environment to install dependencies in and activate it:
+Create a virtual environment to install the dependencies and activate it:
 ```sh
 $ python3 -m venv env_name
 $ source env_name/bin/activate
