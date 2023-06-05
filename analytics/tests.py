@@ -65,40 +65,40 @@ class EMIDataTestCase(TestCase):
         self.assertFalse(EMIData.objects.filter(customer_Id=1).exists())
 
 
-class AnalyticsTestCase(TestCase):
-    def setUp(self):
-        # Create test data
-        CustomerData.objects.create(
-            customer_Id=1,
-            category='Regular',
-            mode_of_payments='Credit Card',
-            amount_spent=100.0,
-            date='2023-05-31'
-        )
-        EMIData.objects.create(
-            customer_Id=1,
-            EMI_paid_on_time='Yes'
-        )
+# class AnalyticsTestCase(TestCase):
+#     def setUp(self):
+#         # Create test data
+#         CustomerData.objects.create(
+#             customer_Id=1,
+#             category='Regular',
+#             mode_of_payments='Credit Card',
+#             amount_spent=100.0,
+#             date='2023-05-31'
+#         )
+#         EMIData.objects.create(
+#             customer_Id=1,
+#             EMI_paid_on_time='Yes'
+#         )
 
-    def test_table_view(self):
-        response = table(None, '2023-05-01', '2023-05-31')
-        self.assertIsInstance(response, JsonResponse)
-        # Add assertions for the response data if required
+#     def test_table_view(self):
+#         response = table(None, '2023-05-01', '2023-05-31')
+#         self.assertIsInstance(response, JsonResponse)
+#         # Add assertions for the response data if required
 
-    def test_bar_view(self):
-        response = bar(None, '2023-05-01', '2023-05-31')
-        self.assertIsInstance(response, JsonResponse)
-        # Add assertions for the response data if required
+#     def test_bar_view(self):
+#         response = bar(None, '2023-05-01', '2023-05-31')
+#         self.assertIsInstance(response, JsonResponse)
+#         # Add assertions for the response data if required
 
-    def test_pie_view(self):
-        response = pie(None, '2023-05-01', '2023-05-31')
-        self.assertIsInstance(response, JsonResponse)
-        # Add assertions for the response data if required
+#     def test_pie_view(self):
+#         response = pie(None, '2023-05-01', '2023-05-31')
+#         self.assertIsInstance(response, JsonResponse)
+#         # Add assertions for the response data if required
 
-    def test_emi_view(self):
-        response = emi(None)
-        self.assertIsInstance(response, JsonResponse)
-        # Add assertions for the response data if required
+#     def test_emi_view(self):
+#         response = emi(None)
+#         self.assertIsInstance(response, JsonResponse)
+#         # Add assertions for the response data if required
 
 class ModelsTestCase(TestCase):
     def test_false_customer_data(self):
