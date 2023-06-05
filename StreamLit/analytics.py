@@ -7,7 +7,7 @@ import datetime
 
 st.set_page_config(layout="wide")
 
-local_host = 'http://54.175.47.56:8000/'
+local_host = 'http://34.234.93.185:8000/'
 
 session_state = st.session_state
 
