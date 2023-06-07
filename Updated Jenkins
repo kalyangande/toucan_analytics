@@ -1,0 +1,49 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone GitHub Repo') {
+           steps {
+              git branch: 'master', url: 'https://github.com/Pythontp/toucan_analytics.git'
+            }
+        }
+        
+        
+        
+        stage ('Build'){
+            steps {
+                sh 'pip install -r requirements.txt'
+            }
+            
+        } 
+        
+    stage('Run Migrations') {
+        steps {
+             sh 'python3 manage.py migrate'
+        }
+    }
+    
+        stage('Run Streamlit Server') {
+            steps {
+                sh 'streamlit run analytics.py &'                 
+
+
+            }
+        }
+        
+        
+        stage('Deploy') {
+            steps {
+                sh ' pip install gunicorn' 
+                sh '/home/ubuntu/django_env/bin/gunicorn toucan_analytics.wsgi:application --bind 0.0.0.0:8000 --daemon'
+            }
+        }
+
+        stage('Health Check') {
+            steps {
+                //sh '/home/ubuntu/toucan_analytics/shellscript'
+                sh 'curl http://0.0.0.0:8000/health/'
+            }
+        }
+    }
+}
