@@ -71,7 +71,7 @@ if 'logged_in' not in st.session_state or not st.session_state['logged_in']:
 if 'logged_in' in st.session_state and st.session_state['logged_in']:
 
     token=st.session_state['token']    
-    st.markdown("<h1 style='text-align: center; '>Toucan Analytics</h1> <br>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center; '>TOUCAN ANALYTICS</h1> <br>", unsafe_allow_html=True)
 
     min_date = datetime.date(2023, 1, 1)
     max_date = datetime.date(2023, 12, 31)
