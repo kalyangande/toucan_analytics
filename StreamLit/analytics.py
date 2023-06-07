@@ -41,15 +41,15 @@ def get_data(token):
 
 if 'logged_in' not in st.session_state or not st.session_state['logged_in']:
     
-    st.markdown("<h1 style='text-align: center; '>Login Page</h1> <br>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center; '>Login</h1> <br>", unsafe_allow_html=True)
     col1,col2,col3 = st.columns(3)
     with col1:
         st.write("")
     with col2:
         username = st.text_input("Username")
         password = st.text_input("Password", type="password")
-        col1, col2,col3= st.columns(3)
-        with col1:
+        col1, col2 ,col3= st.columns(3)
+        with col2:
             login_button = st.button("Login")
 
     if login_button:
