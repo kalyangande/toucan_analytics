@@ -48,8 +48,8 @@ if 'logged_in' not in st.session_state or not st.session_state['logged_in']:
     with col2:
         username = st.text_input("Username")
         password = st.text_input("Password", type="password")
-        col1, col2,col3,col4,col5 = st.columns(5)
-        with col3:
+        col1, col2,col3= st.columns(3)
+        with col2:
             login_button = st.button("Login")
 
     if login_button:
