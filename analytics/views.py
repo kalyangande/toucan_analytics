@@ -88,7 +88,7 @@ def emi(request):
     
 
 def index(request):
-    return HttpResponse("index")
+    return HttpResponse("updated_index")
 
 
 
