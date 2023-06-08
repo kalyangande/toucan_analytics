@@ -41,7 +41,7 @@ def get_data(token):
 
 if 'logged_in' not in st.session_state or not st.session_state['logged_in']:
     
-    st.markdown("<h1 style='text-align: center; '>Login</h1> <br>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center; '>LOGIN</h1> <br>", unsafe_allow_html=True)
     col1,col2,col3 = st.columns(3)
     with col1:
         st.write("")
